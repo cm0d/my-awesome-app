@@ -1,0 +1,55 @@
+import csv
+import os
+
+FILENAME = "health_tracker.csv"
+
+def initialize_file():
+    if not os.path.exists(FILENAME):
+        with open(FILENAME, mode="w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(["Date", "Weight (lbs)", "Exercise (mins)", "Water (oz)", "Zyn Used"])
+
+def log_entry():
+    date = input("Enter the date (YYYY-MM-DD): ")
+    weight = input("Enter your weight (lbs): ")
+    exercise = input("Enter exercise duration (mins): ")
+    water = input("Enter water intake (oz): ")
+    zyn_usage = input("Enter number of Zyn pouches used: ")
+
+    with open(FILENAME, mode="a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow([date, weight, exercise, water, zyn_usage])
+
+    print("Entry saved successfully.")
+
+def view_entries():
+    if not os.path.exists(FILENAME):
+        print("No records found.")
+        return
+    
+    with open(FILENAME, mode="r") as file:
+        reader = csv.reader(file)
+        for row in reader:
+            print("\t".join(row))
+
+def main():
+    initialize_file()
+    while True:
+        print("\nHealth Tracker Menu")
+        print("1. Log new entry")
+        print("2. View entries")
+        print("3. Exit")
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            log_entry()
+        elif choice == "2":
+            view_entries()
+        elif choice == "3":
+            print("Exiting. Stay healthy!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
